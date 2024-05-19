@@ -14,10 +14,15 @@ contract ZombieFactory {
 
     Zombie[] public zombies;
 
+    mapping (address => uint) public zombieToOwner;
+    mapping (address => uint) ownerZombieCount;
+
     function _createZombie(string memory _name, uint _dna) private {
         zombies.push(Zombie(_name, _dna));
 
-        uint id = zombies.push(Zombie(_name, _dna)) - 1;
+        uint id = zombies.length - 1;
+        zombieToOwner[id] = msg.sender;
+        ownerZombieCount[msg.sender]++;
         emit NewZombie(id, _name, _dna);
     }
 
